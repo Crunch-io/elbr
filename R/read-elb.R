@@ -20,17 +20,22 @@
 #' @export
 #' @importFrom readr read_delim
 read_elb <- function (file,
-                    columns=c("timestamp", "elb", "client_port", "backend_port",
+                    columns=c("request_type", "timestamp", "elb", "client_port",
+                            "backend_port",
                             "request_processing_time", "backend_processing_time",
                             "response_processing_time", "elb_status_code",
                             "backend_status_code", "received_bytes", "sent_bytes",
-                            "request", "user_agent", "ssl_cipher", "ssl_protocol"),
+                            "request", "user_agent", "ssl_cipher", "ssl_protocol",
+                            "target_group_arn", "trace_id", "domain_name",
+                            "chosen_cert_arn", "matched_rule_priority",
+                            "request_creation_time", "actions_executed", "redirect_url",
+                            "error_reason"),
                     line_filter=NULL,
                     ...) {
 
     ## Allow specifying a selection of columns. Fill in "col_types" with "-"
     all_cols <- eval(formals(sys.function())[["columns"]])
-    col_types <- unlist(strsplit("Tcccdddiiiicccc", ""))
+    col_types <- unlist(strsplit("cTcccdddiciiccccccccccccc", ""))
     columns <- match.arg(columns, several.ok=TRUE)
     keepcols <- all_cols %in% columns
     col_types[!keepcols] <- "-"
